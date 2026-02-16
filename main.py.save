@@ -1,0 +1,24 @@
+from flask import Flask
+import psutil
+import datetime
+
+app=Flask(__name__)
+m6
+@app.route("/")
+def home():
+	cpu=psutil.cpu_percent()
+	mem=psutil.virtual_memory().percent
+	temps=psutil.sensors_temperatures()
+	temp="N/A"
+	if "cpu_thermal" in temps and temps["cpu_thermal"]:
+		temp=temps["cpu_thermal"][0].current
+	uptime=datetime.datetime.now() - datetime.datetime.fromtimestamp(psutil.boot_time())
+	return f"""
+	<h1>Raspberry Pi Dashboard</h1>
+	<p>CPU Usage: {cpu}%</p>
+	<p>Memory Usage: {mem}%</p>
+	<p>CPU Temp: {temp} degrees C</p>
+	<P>Uptime: {uptime}</p>
+	"""
+if __name__ == "__main__":
+	app.run(host="0.0.0.0", port=5000) 
